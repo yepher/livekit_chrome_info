@@ -65,10 +65,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const currentTab = (await getCurrentWindowTabs())[0];
     const isLiveKit = currentTab.url?.includes('.livekit.io');
     
-    if (!isLiveKit) {
-        information.innerHTML = 'Not a LiveKit.io site';
-        return;
-    }
+    // if (!isLiveKit) {
+    //     information.innerHTML = 'Not a LiveKit.io site';
+    //     return;
+    // }
 
     const result = await browser.scripting.executeScript({
         target: { tabId: currentTab.id },
