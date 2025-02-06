@@ -133,17 +133,38 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // Add to DOMContentLoaded callback after displaying user choices
-    const testLink = document.createElement('div');
-    testLink.innerHTML = `
-        <button id="run-webrtc-test" class="test-button">
-            Run WebRTC Browser Test
-        </button>
+    // Create Tools tab content
+    const toolsContent = document.getElementById('tools-content');
+    toolsContent.innerHTML = `
+        <div class="tool-section">
+            <h3>Debugging Tools</h3>
+            <button class="tool-button" id="webrtc-internals">
+                Open WebRTC Internals
+                <span class="tool-description">Chrome's WebRTC diagnostic page</span>
+            </button>
+            <button class="tool-button" id="webrtc-test">
+                Run WebRTC Browser Test
+                <span class="tool-description">LiveKit's connectivity check</span>
+            </button>
+            <button class="tool-button" id="chrome-flags">
+                Open Chrome Flags
+                <span class="tool-description">Experimental browser features</span>
+            </button>
+        </div>
     `;
-    testLink.addEventListener('click', () => {
+
+    // Add event listeners for tools
+    toolsContent.querySelector('#webrtc-internals').addEventListener('click', () => {
+        browser.tabs.create({ url: 'chrome://webrtc-internals/' });
+    });
+    
+    toolsContent.querySelector('#webrtc-test').addEventListener('click', () => {
         browser.tabs.create({ url: 'https://livekit.io/webrtc/browser-test' });
     });
-    information.appendChild(testLink);
+    
+    toolsContent.querySelector('#chrome-flags').addEventListener('click', () => {
+        browser.tabs.create({ url: 'chrome://flags/' });
+    });
 });
 
 document.addEventListener('click', (e) => {
@@ -153,12 +174,9 @@ document.addEventListener('click', (e) => {
         });
         e.target.classList.add('active');
         
-        if (e.target.dataset.tab === 'webrtc') {
-            // Open WebRTC internals in new tab
-            browser.tabs.create({ url: 'chrome://webrtc-internals/' });
-            // Switch back to LiveKit tab
-            document.querySelector('.tab-button[data-tab="livekit"]').click();
-        }
+        const tabName = e.target.dataset.tab;
+        document.getElementById(`${tabName === 'tools' ? 'tools-content' : 'information'}`)
+            .classList.add('active');
     }
 });
 
