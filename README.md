@@ -1,5 +1,9 @@
 # LiveKit Extension
 
+A Chrome extension diagnostic tool for LiveKit.
+
+![screenshot](screenshot/example.png)
+
 ## How to install:
 
 ### Chrome:

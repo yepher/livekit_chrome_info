@@ -13,11 +13,43 @@ function copy(text) {
     ta.remove();
 }
 
-function fillField(container, name, value) {
+function fillField(container, name, value, tabId) {
     const entry = document.createElement('div');
     entry.className = 'storage-entry';
-    entry.innerHTML = `<b>${name}:</b><br /><span>${value}</span>`;
-    entry.addEventListener('click', () => copy(value));
+
+    // Handle loglevel entries with a dropdown
+    if (name.startsWith('loglevel:')) {
+        entry.innerHTML = `<b>${name}:</b><br />`;
+        const select = document.createElement('select');
+        
+        // Create dropdown options
+        ['DEBUG', 'INFO', 'WARN', 'ERROR'].forEach(level => {
+            const option = document.createElement('option');
+            option.value = level;
+            option.textContent = level;
+            option.selected = (value === level);
+            select.appendChild(option);
+        });
+
+        // Update storage when selection changes
+        select.addEventListener('change', (e) => {
+            const newValue = e.target.value;
+            browser.scripting.executeScript({
+                target: { tabId: tabId },
+                func: (key, value) => {
+                    localStorage.setItem(key, value);
+                },
+                args: [name, newValue]
+            });
+        });
+
+        entry.appendChild(select);
+    } else {
+        // Existing click-to-copy behavior for other entries
+        entry.innerHTML = `<b>${name}:</b><br /><span>${value}</span>`;
+        entry.addEventListener('click', () => copy(value));
+    }
+
     container.appendChild(entry);
 }
 
@@ -57,9 +89,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     information.innerHTML = ''; // Clear previous content
     
     // Modified user choices handling
-    if (storageItems['Ik-user-choices']) {
+    if (storageItems['lk-user-choices']) {
         try {
-            const choices = JSON.parse(storageItems['Ik-user-choices']);
+            const choices = JSON.parse(storageItems['lk-user-choices']);
             const container = document.createElement('div');
             container.className = 'user-choices-container';
             
@@ -86,18 +118,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             const wrapper = document.createElement('div');
             wrapper.className = 'user-choices-wrapper';
             wrapper.appendChild(container);
-            wrapper.addEventListener('click', () => copy(storageItems['Ik-user-choices']));
+            wrapper.addEventListener('click', () => copy(storageItems['lk-user-choices']));
             
             information.appendChild(wrapper);
         } catch (e) {
-            fillField(information, 'User Choices (malformed)', storageItems['Ik-user-choices']);
+            fillField(information, 'User Choices (malformed)', storageItems['lk-user-choices'], currentTab.id);
         }
     }
 
     // Add other loglevel entries
     Object.entries(storageItems).forEach(([key, value]) => {
-        if (key !== 'Ik-user-choices') {
-            fillField(information, key, value);
+        if (key !== 'lk-user-choices') {
+            fillField(information, key, value, currentTab.id);
         }
     });
 
