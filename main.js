@@ -138,6 +138,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     toolsContent.innerHTML = `
         <div class="tool-section">
             <h3>Debugging Tools</h3>
+            <button class="tool-button" id="cloud-dashboard">
+                Cloud Dashboard
+                <span class="tool-description">Manage your LiveKit cloud projects</span>
+            </button>
             <button class="tool-button" id="livekit-status">
                 LiveKit Cloud Status
                 <span class="tool-description">Real-time service status dashboard</span>
@@ -153,6 +157,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             <button class="tool-button" id="chrome-flags">
                 Open Chrome Flags
                 <span class="tool-description">Experimental browser features</span>
+            </button>
+            <h3>Docs</h3>
+            <button class="tool-button" id="docs-link">
+                Documentation
+                <span class="tool-description">LiveKit's official documentation</span>
+            </button>
+            <button class="tool-button" id="github-livekit">
+                GitHub LiveKit
+                <span class="tool-description">Core LiveKit repository</span>
+            </button>
+            <button class="tool-button" id="github-examples">
+                LiveKit Examples
+                <span class="tool-description">Official code examples and demos</span>
             </button>
         </div>
     `;
@@ -172,6 +189,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     toolsContent.querySelector('#chrome-flags').addEventListener('click', () => {
         browser.tabs.create({ url: 'chrome://flags/' });
+    });
+
+    toolsContent.querySelector('#cloud-dashboard').addEventListener('click', () => {
+        browser.tabs.create({ url: 'https://cloud.livekit.io/' });
+    });
+
+    // Add event listener for the documentation link
+    toolsContent.querySelector('#docs-link').addEventListener('click', () => {
+        browser.tabs.create({ url: 'https://docs.livekit.io/home/' });
+    });
+
+    // Add event listeners for GitHub links
+    toolsContent.querySelector('#github-livekit').addEventListener('click', () => {
+        browser.tabs.create({ url: 'https://github.com/livekit' });
+    });
+    toolsContent.querySelector('#github-examples').addEventListener('click', () => {
+        browser.tabs.create({ url: 'https://github.com/livekit-examples' });
     });
 });
 
