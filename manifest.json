@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "LiveKit Extension",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "livekit-extension@yepher.com"
+    }
+  },
+  "version": "1.0",
+  "description": "LiveKit Extension",
+  "icons": {
+    "16": "/images/logo.png",
+    "32": "/images/logo.png",
+    "48": "/images/logo.png",
+    "128": "/images/logo.png"
+  },
+  "action": {
+    "default_icon": "/images/logo.png",
+    "default_title": "LiveKit Extension",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting",
+    "debugger",
+    "tabs"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.livekit.io/*"
+      ],
+      "js": [
+        "main.js"
+      ]
+    }
+  ]
+}
