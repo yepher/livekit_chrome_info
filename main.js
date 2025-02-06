@@ -138,6 +138,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     toolsContent.innerHTML = `
         <div class="tool-section">
             <h3>Debugging Tools</h3>
+            <button class="tool-button" id="livekit-status">
+                LiveKit Cloud Status
+                <span class="tool-description">Real-time service status dashboard</span>
+            </button>
             <button class="tool-button" id="webrtc-internals">
                 Open WebRTC Internals
                 <span class="tool-description">Chrome's WebRTC diagnostic page</span>
@@ -154,6 +158,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     `;
 
     // Add event listeners for tools
+    toolsContent.querySelector('#livekit-status').addEventListener('click', () => {
+        browser.tabs.create({ url: 'https://status.livekit.io/' });
+    });
+    
     toolsContent.querySelector('#webrtc-internals').addEventListener('click', () => {
         browser.tabs.create({ url: 'chrome://webrtc-internals/' });
     });
