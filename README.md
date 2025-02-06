@@ -2,7 +2,7 @@
 
 A Chrome extension diagnostic tool for LiveKit.
 
-![screenshot](screenshot/example.png)
+![screenshot](screenshot/demo.gif)
 
 ## How to install:
 
